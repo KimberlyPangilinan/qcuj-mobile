@@ -1,15 +1,35 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import * as Animatable from "react-native-animatable";
+import * as SecureStore from 'expo-secure-store';
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 const image = require("../../assets/images/logo.png")
 const Splash = ({ navigation }) => {
+  const navigation1 = useNavigation();
+  const isFocused = useIsFocused(); 
+ 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate("LandingScreen");
-    }, 4000);
-  }, [navigation]);
-
+    
+    const getToken = async () => {
+        try {
+            const token = await SecureStore.getItemAsync('token');
+            if (token) {
+                console.log('Token available:', token);
+                navigation.navigate("HomeStack");
+            } else {
+                navigation.navigate("LandingScreen");
+                console.log('Token not available');
+            }
+        } catch (error) {
+            console.error('Error retrieving token:', error);
+        }
+    };
+  setTimeout(() => {
+    getToken();
+  }, 4000);
+    
+}, [navigation1, isFocused]);
   return (
     <View className="justify-center items-center flex-1 ">
       <Animatable.Image

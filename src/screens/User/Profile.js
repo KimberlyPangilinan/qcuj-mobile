@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import Layout from '../../components/Layout';
+import Button from '../../components/buttons/Button';
 
 export default function Profile({navigation}) {
   const handleLogout = async () => {
     try {
       await SecureStore.deleteItemAsync('token');
-      // Optionally, navigate to the login screen or perform any other necessary actions after logout
       Alert.alert('Logged out successfully');
       navigation.navigate("SignIn")
       
@@ -17,7 +17,7 @@ export default function Profile({navigation}) {
   };
 
   return (
-    <Layout>
+    <Layout title="My Profile">
       <Button title="Logout" onPress={handleLogout} />
     </Layout>
   );

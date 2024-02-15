@@ -56,13 +56,11 @@ export default function SignIn({ navigation }) {
         return response.json();
     })
     .then(data => {
-        // Handle the response data here
         ToastAndroid.show('Login Successful ', ToastAndroid.SHORT);
         navigation.navigate("HomeStack")
         save("token",data.token)
     })
     .catch(error => {
-        // Handle errors here
         console.error('There was a problem with the fetch operation:', error);
     });
   }
@@ -77,6 +75,7 @@ export default function SignIn({ navigation }) {
         </View>
         <ScrollView >
               <Input
+                type="email"
                 label="Email"
                 onChangeText={setEmail}
                 text={email}
@@ -84,6 +83,7 @@ export default function SignIn({ navigation }) {
               />
               <Text></Text>
                 <Input
+                secureTextEntry={true}
                 type="password"
                 label="Password"
                 onChangeText={setPassword}

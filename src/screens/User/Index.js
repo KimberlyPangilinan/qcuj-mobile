@@ -41,11 +41,11 @@ export default function Index({navigation}) {
                 <Image source={image} className=" w-8 h-8" />
             </View>
             <View>
-            {error1 || error2 || error3? (
+            {error1 || error2 || error3 ||error4? (
                 <Text>Oh no, there was an error{error2.error}</Text>
-            ) : isLoading1 || isLoading2 ? (
+            ) : isLoading1 || isLoading2 || isLoading3 || isLoading4 ? (
                 <Text>Loading...</Text>
-            ) : data1 || data2 || data3 ? (
+            ) : data1 || data2 || data3 || data4 ? (
             <ScrollView>
                 <Image source={{uri: 'https://i0.wp.com/qcu.edu.ph/wp-content/uploads/2023/07/THUMBNAIL-QCU-JOURNALS-1.png?fit=844%2C474&ssl=1'}} className="w-full h-[24vh]" />
                 { data1 &&                 
@@ -100,7 +100,6 @@ export default function Index({navigation}) {
                   </ScrollView>
               </View>
             } 
-        
               </ScrollView>
            ): null }
             </View>
