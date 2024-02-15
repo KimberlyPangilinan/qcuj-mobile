@@ -14,7 +14,7 @@ import Browse from "./src/screens/User/Browse/Browse.js";
 import Saved from "./src/screens/User/Saved.js";
 import Profile from "./src/screens/User/Profile.js";
 import Index from "./src/screens/User/Index.js";
-import SignIn from "./src/screens/SignIn.js.js";
+import SignIn from "./src/screens/SignIn.js";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

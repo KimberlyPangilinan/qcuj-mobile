@@ -19,7 +19,7 @@ export default function LandingScreen({navigation}) {
           <Text className="text-xs text-center my-1"> ---- or ----</Text>
           <SecondaryButton 
               title="Sign in" 
-              onPress={() => navigation.navigate('HomeStack')}
+              onPress={() => navigation.navigate('SignIn')}
           />
       </View>
     </View>
