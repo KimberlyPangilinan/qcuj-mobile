@@ -5,7 +5,7 @@ import Input from "../components/forms/Input";
 import Button from "../components/buttons/Button";
 import {  generateFormContent } from "../helpers/constants";
 
-export default function SignUp({ navigation }) {
+export default function SignIn({ navigation }) {
   const [formStep, setFormStep] = useState(0);
   
   const [firstName, setFirstName] = useState("");

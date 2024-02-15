@@ -1,7 +1,7 @@
 import { View, Text , Button, SafeAreaView} from 'react-native'
 import React from 'react'
-import { useGetArticleByIdQuery } from "../services/article";
-import Layout from "../components/Layout";
+import { useGetArticleByIdQuery } from "../../../services/article";
+import Layout from "../../../components/Layout";
 export default function Article({ route, navigation }) {
     const { itemId, otherParam } = route.params;
     const { data, error, isLoading } = useGetArticleByIdQuery({ 

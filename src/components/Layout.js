@@ -25,7 +25,7 @@ export default function Layout({title, onPress, showHeader = true,children}) {
         ? <CustomHeader title={title} onPress={onPress} />
         : <></>
     }
-    <View className="flex-1 px-[16px]  w-full justify-between">
+    <View className="flex-1 px-[16px]  w-full">
         {children}
     </View>
   </View>
