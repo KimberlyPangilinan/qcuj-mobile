@@ -8,12 +8,31 @@ import Button from "../../../components/buttons/Button";
 import { Item } from './Browse';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserId } from '../../../helpers/utilities';
 
 export default function Article({ route, navigation }) {
+  const [token, setToken] = useState('');
+  const [userId, setUserId] = useState();
+  useEffect(() => {
+    const fetchUserId = async () => {
+        try {
+            const userId = await getUserId()
+            if (userId) {
+                setUserId(userId)
+            } else {
+                navigation.navigate("SignIn")
+            }
+        } catch (error) {
+            console.error('Error retrieving userid:', error);
+        }
+    };
+
+    fetchUserId();
+}, []);
     const [savedArticles, setSavedArticles] = useState([])
     const { itemId, savedArticle } = route.params;
     const { data, error, isLoading } = useGetArticleByIdQuery({ 
-        inputLogs: { author_id: "8", article_id: itemId },
+        inputLogs: { author_id: userId, article_id: itemId },
       });
       async function saveOffline(articleToSave) {
         try {
