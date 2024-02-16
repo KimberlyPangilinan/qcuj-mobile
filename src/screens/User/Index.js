@@ -5,18 +5,22 @@ import { Image } from "react-native";
 import { useGetRecommendationsBasedCategoryQuery, useGetRecommendationsBasedHistoryQuery } from '../../services/recommendation';
 import { Item } from './Browse/Browse';
 import * as SecureStore from 'expo-secure-store';
+import { getUserId } from '../../helpers/utilities';
 const image = require("../../../assets/images/logo.png");
+
 
 export default function Index({navigation}) {
 
     const [token, setToken] = React.useState('');
-
+    const [userId, setUserId] = React.useState();
     React.useEffect(() => {
         const getToken = async () => {
             try {
                 const token = await SecureStore.getItemAsync('token');
+                const userId = await getUserId()
                 if (token) {
-                    setToken(token);
+                    setToken(token);   
+                    setUserId(userId)
                 } else {
                     navigation.navigate("SignIn")
                 }
@@ -27,7 +31,7 @@ export default function Index({navigation}) {
 
         getToken();
     }, []);
-    const { data: data1, error: error1, isLoading: isLoading1 } = useGetRecommendationsBasedHistoryQuery(8);
+    const { data: data1, error: error1, isLoading: isLoading1 } = useGetRecommendationsBasedHistoryQuery(userId);
     const { data: data2, error: error2, isLoading: isLoading2 } = useGetRecommendationsBasedCategoryQuery("publication_date");
     const { data: data3, error: error3, isLoading: isLoading3 } = useGetRecommendationsBasedCategoryQuery("total_downloads");
     const { data: data4, error: error4, isLoading: isLoading4 } = useGetRecommendationsBasedCategoryQuery("total_reads");

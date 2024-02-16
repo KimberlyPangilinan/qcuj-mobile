@@ -5,6 +5,7 @@ import Input from "../components/forms/Input";
 import Button from "../components/buttons/Button";
 import * as SecureStore from 'expo-secure-store';
 import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { getUserId } from "../helpers/utilities";
 
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
@@ -55,10 +56,13 @@ export default function SignIn({ navigation }) {
         }
         return response.json();
     })
-    .then(data => {
-        ToastAndroid.show('Login Successful ', ToastAndroid.SHORT);
-        navigation.navigate("HomeStack")
+    .then(async data => {
         save("token",data.token)
+        save("userId",data.userId.toString())
+        
+        ToastAndroid.show(`Login Successful user ${await getUserId()}`, ToastAndroid.SHORT);
+        navigation.navigate("HomeStack")
+        
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
