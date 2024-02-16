@@ -14,7 +14,8 @@ export const recommendationApi = createApi({
       query: queryArg => ({
         method: 'POST',
         body: {
-          category : `${queryArg}`
+          category : `${queryArg.category}`,
+          period: `${queryArg.period}`
         },
       }),
     }),

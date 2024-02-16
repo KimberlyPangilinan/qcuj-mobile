@@ -31,6 +31,28 @@ export const Item = ({ savedArticle,id, title, abstract, contributors, keyword, 
         </View>
     </Pressable>
 );
+export const TopItem = ({ savedArticle,id, title, abstract, contributors, keyword, navigation, index }) => (
+    <Pressable
+        onPress={() =>
+            navigation.navigate("Article", {
+                itemId: id,
+                savedArticle:savedArticle,
+            })
+        }
+        className="px-4 py-8 my-2 mr-1 border border-custom-blue rounded max-w-xs justify-between"
+    >   
+        <View className="pl-4">
+        <Text className="font-bold text-custom-blue mb-2">{title}</Text>
+        <Text className="mb-2 text-justify">{abstract} ...</Text>
+
+        <ContributorItems contributors={contributors} />
+        <View className="flex-row flex-wrap">
+            <KeywordItems keywords={keyword} />
+        </View>
+        </View>
+        <View><Text className="text-4xl font-bold text-custom-blue absolute bottom-[-20] right-[-5]">{index}</Text></View>
+    </Pressable>
+);
 export default function Browse({ navigation }) {
     const [searchInput, setSearchInput] = React.useState("");
     const { data, error, isLoading } = useGetArticlesByIssueIdQuery({
