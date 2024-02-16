@@ -7,7 +7,6 @@ import { Item } from './Browse/Browse';
 import * as SecureStore from 'expo-secure-store';
 const image = require("../../../assets/images/logo.png");
 
-
 export default function Index({navigation}) {
 
     const [token, setToken] = React.useState('');

@@ -12,12 +12,12 @@ import Layout from "../../../components/Layout";
 import ContributorItems from "../../../components/articles/ContributorItems";
 import KeywordItems from "../../../components/articles/KeywordItems";
 
-export const Item = ({  savedArticle,id, title, abstract, contributors, keyword, navigation }) => (
+export const Item = ({ savedArticle,id, title, abstract, contributors, keyword, navigation }) => (
     <Pressable
         onPress={() =>
             navigation.navigate("Article", {
                 itemId: id,
-                savedArticle:savedArticle
+                savedArticle:savedArticle,
             })
         }
         className="px-4 py-8 my-2 mr-1 border-[0.2px] border-slate-400 rounded max-w-sm"

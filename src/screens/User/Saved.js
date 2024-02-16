@@ -6,13 +6,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Layout from '../../components/Layout';
 import { Item } from './Browse/Browse';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Button from '../../components/buttons/Button';
 
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
+async function removeAll() {
+  await AsyncStorage.removeItem('savedArticles');
+}
 export default function Saved({ route, navigation }) {
-
+  
+  
   const [savedArticles, setSavedArticles] = useState([]);
   const navigation1 = useNavigation();
   const isFocused = useIsFocused(); 
@@ -41,8 +46,9 @@ export default function Saved({ route, navigation }) {
     <Layout title="My Saved Articles">
       <ScrollView>
         {savedArticles.map((article, index) => (
-          <Item key={index} title={article.title} abstract={article.abstract.slice(0,200)} savedArticle={article} navigation={navigation}/>
+          <Item   key={index} title={article.title} abstract={article.abstract.slice(0,200)} savedArticle={article} navigation={navigation}/>
         ))}
+        <Button title="Remove all" onPress={()=> removeAll()}/>
       </ScrollView>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import { View, Text , SafeAreaView, ScrollView, Alert, } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGetArticleByIdQuery } from "../../../services/article";
 import Layout from "../../../components/Layout";
 import ContributorItems from '../../../components/articles/ContributorItems';
@@ -7,37 +7,33 @@ import KeywordItems from '../../../components/articles/KeywordItems';
 import Button from "../../../components/buttons/Button";
 import { Item } from './Browse';
 import SecondaryButton from '../../../components/buttons/SecondaryButton';
-import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-async function save(key, value) {
-  await SecureStore.setItemAsync(key, value);
-}
-
 export default function Article({ route, navigation }) {
-
     const [savedArticles, setSavedArticles] = useState([])
     const { itemId, savedArticle } = route.params;
     const { data, error, isLoading } = useGetArticleByIdQuery({ 
-        inputLogs: { author_id: "0", article_id: itemId },
+        inputLogs: { author_id: "8", article_id: itemId },
       });
-      
       async function saveOffline(articleToSave) {
         try {
-          // Check if the article with the same article_id already exists
+          // Retrieve savedArticles from AsyncStorage
           const savedArticles = await AsyncStorage.getItem('savedArticles');
+          // Parse savedArticles or initialize an empty array if it's null or undefined
           const parsedArticles = savedArticles ? JSON.parse(savedArticles) : [];
-          const existingArticle = parsedArticles.find(article => article.article_id === articleToSave.article_id);
-          if (savedArticles.length>5){
+          if (parsedArticles.length >= 5) {
             Alert.alert('Save offline limit reached', 'Remove articles to save new');
             return;
           }
+          const existingArticle = parsedArticles.find(article => article.article_id === articleToSave.article_id);
+          
           if (existingArticle) {
             // If the article with the same article_id exists, alert the user
             Alert.alert('Article already saved', 'This article has already been saved.');
           } else {
             // If the article with the same article_id does not exist, add it to the saved articles
             parsedArticles.push(articleToSave);
+            // Save updated articles back to AsyncStorage
             await AsyncStorage.setItem('savedArticles', JSON.stringify(parsedArticles));
             Alert.alert('Article saved successfully');
           }
@@ -46,7 +42,33 @@ export default function Article({ route, navigation }) {
           Alert.alert('Error', 'Failed to save article.');
         }
       }
+    useEffect(() => {
+      const updateSavedArticles = async () => {
+        const articles = await AsyncStorage.getItem('savedArticles');
+        setSavedArticles(articles ? JSON.parse(articles) : []);
+      };
       
+      updateSavedArticles();
+    }, []);
+    
+    async function removeOffline(articleToRemove) {
+      try {
+          const savedArticles = await AsyncStorage.getItem('savedArticles');
+         const parsedArticles = savedArticles ? JSON.parse(savedArticles) : [];
+          const existingArticleIndex = parsedArticles.findIndex(article => article.article_id === articleToRemove.article_id);
+          
+          if (existingArticleIndex !== -1) {
+              parsedArticles.splice(existingArticleIndex, 1);
+              await AsyncStorage.setItem('savedArticles', JSON.stringify(parsedArticles));
+              Alert.alert('Article removed successfully');
+          } else {
+              Alert.alert('Article not found', 'The article to remove was not found in offline storage.');
+          }
+      } catch (error) {
+          console.error('Error removing article:', error);
+          Alert.alert('Error', 'Failed to remove article.');
+      }
+  }
       
   return (
     <Layout onPress={() => navigation.goBack()}>
@@ -90,7 +112,7 @@ export default function Article({ route, navigation }) {
                   </View>
                 </View>
                 <View className="flex-row">
-                  <Button title="Remove offline" /><Text> </Text>
+                  <Button title="Remove offline" onPress={()=>removeOffline(savedArticle)}/><Text> </Text>
                 </View>
             
               </ScrollView>
@@ -144,7 +166,7 @@ export default function Article({ route, navigation }) {
           <Text className="mt-8 font-bold text-lg">
             More Articles like this
           </Text>
-          <Item
+          <Item  
             title={data.recommendations[0].title}
             id={data.selected_article[0].article_id}
             abstract={data.recommendations[0].abstract}
