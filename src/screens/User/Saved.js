@@ -14,6 +14,7 @@ async function save(key, value) {
 
 async function removeAll() {
   await AsyncStorage.removeItem('savedArticles');
+  Alert.alert("Removed all saved articles")
 }
 export default function Saved({ route, navigation }) {
   
@@ -48,7 +49,7 @@ export default function Saved({ route, navigation }) {
         {savedArticles.map((article, index) => (
           <Item   key={index} title={article.title} abstract={article.abstract.slice(0,200)} savedArticle={article} navigation={navigation}/>
         ))}
-        <Button title="Remove all" onPress={()=> removeAll()}/>
+        <Button title="Remove all" onPress={()=> {removeAll();setSavedArticles([])}}/>
       </ScrollView>
     </Layout>
   );
